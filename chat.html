@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  *{
+  margin: 0px;
+  padding: 0px;
+  }
+  .form{
+  position: relative;
+  }
+  #int , #btn{
+  position: absolute;
+  margin-top: 600px;
+  }
+  #int , #int2{
+  padding: 4px;
+    border: 2px solid black;
+outline: none;
+  border-radius: 8px;
+  width: 220px;
+  margin-left: 7px;
+  }
+  #int2{
+  margin-top: 640px;
+  position: absolute;
+  }
+  #btn{
+  padding: 4px;
+  margin-left: 240px;
+  border: 2px solid black;
+  background-color: transparent;
+  font-weight: bold;
+  border-radius: 8px;
+  }
+  #btn:hover{
+  background-color: black;
+  color: white;
+  }
+  #count{
+  float: right; 
+  margin-right: 10px;
+  }
+    #m{
+  width: 340px;
+  border: 2px solid black;
+  height: 30px;
+  padding-left: 2px;
+  line-height: 30px;
+  }
+  </style>
+</head>
+<body>
+  
+  <div class="form">
+  <input type="text" id="int" placeholder="Enter message"> 
+  <input type="submit" value="Send message" id="btn" onclick="a()">
+    <input type="text" id="int2" placeholder="Enter your name"> 
+
+  </div>
+  
+  <h3 id="count">User online: 5</h3>
+  
+  <br>
+  
+  <div id="message">
+  shfhx
+  </div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  
+  let html = " "
+  let count = document.getElementById("count")
+  
+  let message = document.getElementById("message");
+  
+  let int = document.getElementById("int")
+  
+  let int2 = document.getElementById("int2")
+  var socket = io();
+  
+  socket.on("usercnt" , (msg) => {
+  count.innerHTML = "User online: " + msg;
+  })
+  
+  
+  socket.on("sendmsg" , (msg, msg2) => {
+  html += `
+     <h4 id="m">${msg2}: <span style="font-weight: 400;">${msg}</span></h4>
+     <br>
+  `
+  message.innerHTML = html;
+  })
+  
+  function a(){
+  socket.emit("sendmsg" , int.value , int2. value)
+  }
+</script>
+</html>
